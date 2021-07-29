@@ -1,0 +1,13 @@
+[package]
+name = "onnx-server"
+version = "0.1.0"
+authors = ["xaviertao <tao.xavier@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "3"
+onnxruntime = { path = "/home/peter/Documents/CONTRIB/onnxruntime-rs/onnxruntime", features = ['model-fetching']}
+tokenizers = "0.10.1"
+serde = "1.0.126"
