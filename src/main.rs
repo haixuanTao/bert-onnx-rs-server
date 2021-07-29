@@ -99,7 +99,7 @@ async fn main() -> std::io::Result<()> {
             },
         ]);
         let state = AppState {
-            tokenizer: tokenizer,
+            tokenizer,
             session: Mutex::new(
                 environment
                     .new_session_builder()
