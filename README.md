@@ -1,6 +1,6 @@
 # Demo BERT ONNX server written in rust
 
-This demo showcase the use of onnxruntime-rs with a GPU on CUDA 11
+This demo showcase the use of onnxruntime-rs with a GPU on CUDA 11 served by actix-web and tokenized with Hugging Face tokenizer.
 
 ## Requirement
 
@@ -32,4 +32,25 @@ export LD_LIBRARY_PATH=path/to/onnxruntime-linux-x64-gpu-1.8.0/lib:${LD_LIBRARY_
 
 ```bash
 curl http://localhost:8080/\?data=Hello+World
+```
+
+# Python alternative
+
+## Install
+
+```bash
+pip install fastapi uvicorn
+```
+
+## Run
+
+```bash
+cd src
+uvicorn python_alternative:app --reload --workers 1
+```
+
+## Call
+
+```bash
+curl http://localhost:8000/\?data=Hello+World
 ```
