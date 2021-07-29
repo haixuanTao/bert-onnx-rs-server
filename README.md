@@ -41,7 +41,7 @@ To compare with standart python server with FastAPI, I've added the code for the
 ## Install
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requirements.txt
 ```
 
 ## Run
