@@ -1204,18 +1204,19 @@ dependencies = [
 [[package]]
 name = "onnxruntime"
 version = "0.0.12"
+source = "git+https://github.com/haixuanTao/onnxruntime-rs?branch=owned_environment#4ebef94d5ac6df85f3fa271fd0a0a13b9be57dd1"
 dependencies = [
  "lazy_static",
  "ndarray",
  "onnxruntime-sys",
  "thiserror",
  "tracing",
- "ureq",
 ]
 
 [[package]]
 name = "onnxruntime-sys"
 version = "0.0.12"
+source = "git+https://github.com/haixuanTao/onnxruntime-rs?branch=owned_environment#4ebef94d5ac6df85f3fa271fd0a0a13b9be57dd1"
 dependencies = [
  "flate2",
  "tar",

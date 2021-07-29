@@ -8,6 +8,6 @@ edition = "2018"
 
 [dependencies]
 actix-web = "3"
-onnxruntime = { path = "/home/peter/Documents/CONTRIB/onnxruntime-rs/onnxruntime", features = ['model-fetching']}
+onnxruntime = { git = "https://github.com/haixuanTao/onnxruntime-rs", branch = 'owned_environment'}
 tokenizers = "0.10.1"
 serde = "1.0.126"
