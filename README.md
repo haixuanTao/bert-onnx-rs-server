@@ -36,6 +36,8 @@ curl http://localhost:8080/\?data=Hello+World
 
 # Python alternative
 
+To compare with standart python server with FastAPI, I've added the code for the same server in src called `python_alternative.py`
+
 ## Install
 
 ```bash
