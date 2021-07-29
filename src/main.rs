@@ -2,6 +2,7 @@ use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 use onnxruntime::*;
 use serde::Deserialize;
 use std::sync::Mutex;
+use std::time::Instant;
 use tokenizers::models::wordpiece::WordPieceBuilder;
 use tokenizers::normalizers::bert::BertNormalizer;
 use tokenizers::pre_tokenizers::bert::BertPreTokenizer;
@@ -9,12 +10,16 @@ use tokenizers::processors::bert::BertProcessing;
 use tokenizers::tokenizer::AddedToken;
 use tokenizers::tokenizer::{EncodeInput, Tokenizer};
 use tokenizers::utils::padding::{PaddingDirection::Right, PaddingParams, PaddingStrategy::Fixed};
+use tokenizers::utils::truncation::TruncationParams;
+use tokenizers::utils::truncation::TruncationStrategy::LongestFirst;
 #[derive(Deserialize)]
 struct DataQuery {
     data: String,
 }
 
 async fn use_onnx(state: web::Data<AppState>, query: web::Query<DataQuery>) -> impl Responder {
+    let start = Instant::now();
+
     let input = state
         .tokenizer
         .encode(EncodeInput::Single(query.data.clone()), true)
@@ -33,8 +38,18 @@ async fn use_onnx(state: web::Data<AppState>, query: web::Query<DataQuery>) -> i
         .unwrap();
 
     let mut session = state.session.lock().unwrap();
+    let encode = Instant::now();
     let _outputs: Vec<tensor::OrtOwnedTensor<f32, _>> = session.run(vec![token, mask]).unwrap();
-    HttpResponse::Ok().body(format!("{}: {}", query.data, _outputs[0].to_string(),))
+
+    let onnx = Instant::now();
+
+    HttpResponse::Ok().body(format!(
+        "{}: {}, time encode: {}, time onnx: {}",
+        query.data,
+        _outputs[0].to_string(),
+        (encode - start).as_millis(),
+        (onnx - encode).as_millis()
+    ))
 }
 // This struct represents state
 struct AppState {
@@ -65,6 +80,11 @@ async fn main() -> std::io::Result<()> {
             pad_id: 0,
             pad_type_id: 0,
             pad_token: "[PAD]".into(),
+        }));
+        tokenizer.with_truncation(Some(TruncationParams {
+            max_length: 60,
+            strategy: LongestFirst,
+            stride: 0,
         }));
         tokenizer.with_pre_tokenizer(Box::new(BertPreTokenizer));
         tokenizer.with_post_processor(Box::new(BertProcessing::new(

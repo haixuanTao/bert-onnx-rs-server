@@ -1,21 +1,23 @@
 # Demo BERT ONNX server written in rust
 
-This demo showcase the use of onnxruntime-rs with a GPU on CUDA 11 served by actix-web and tokenized with Hugging Face tokenizer.
+This demo showcase the use of onnxruntime-rs on BERT with a GPU on CUDA 11 served by actix-web and tokenized with Hugging Face tokenizer.
 
 ## Requirement
 
 - Linux x86_64
 - NVIDIA GPU with CUDA 11 (Not sure if CUDA 10 works)
 - Rust (obviously)
+- git lfs for the models
 
 ## Installation
 
 ```bash
 export ORT_USE_CUDA=1
+git lfs install
 cargo build --release
 ```
 
-## Requirement
+## Run
 
 ```bash
 cargo run --release

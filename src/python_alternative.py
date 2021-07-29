@@ -3,6 +3,7 @@ from transformers import (
     BertTokenizer,
 )
 import onnxruntime as rt
+import time
 
 app = FastAPI()
 
@@ -18,6 +19,8 @@ MAX_LEN = 60
 
 @app.get("/")
 async def root(data: str):
+    start = time.time()
+
     encoding = tokenizer(
         [data],
         add_special_tokens=True,
@@ -28,6 +31,8 @@ async def root(data: str):
         return_attention_mask=True,
         return_tensors="np",
     )
+    encode = time.time()
+
     pred_onx = sess.run(
         None,
         {
@@ -36,4 +41,11 @@ async def root(data: str):
         },
     )
 
-    return {data: str(pred_onx[0])}
+    onnx = time.time()
+
+    print(encoding["input_ids"])
+    return {
+        data: str(pred_onx[0]),
+        "time encode": "%.1f ms" % (1000 * (encode - start)),
+        "time onnx": "%.1f ms" % (1000 * (onnx - encode)),
+    }
