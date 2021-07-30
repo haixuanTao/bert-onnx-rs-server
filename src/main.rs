@@ -47,8 +47,8 @@ async fn use_onnx(state: web::Data<AppState>, query: web::Query<DataQuery>) -> i
         "{}: {}, time encode: {}, time onnx: {}",
         query.data,
         _outputs[0].to_string(),
-        (encode - start).as_millis(),
-        (onnx - encode).as_millis()
+        (encode - start).as_micros(),
+        (onnx - encode).as_micros()
     ))
 }
 // This struct represents state

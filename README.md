@@ -58,3 +58,7 @@ uvicorn python_alternative:app --reload --workers 1
 ```bash
 curl http://localhost:8000/\?data=Hello+World
 ```
+
+## training and converting to ONNX
+
+The training pipeline is in another repo: https://github.com/haixuanTao/bert-onnx-rs-pipeline

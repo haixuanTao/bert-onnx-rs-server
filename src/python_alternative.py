@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from transformers import (
-    BertTokenizer,
+    BertTokenizerFast,
 )
 import onnxruntime as rt
 import time
@@ -12,7 +12,7 @@ PRE_TRAINED_MODEL_NAME = "bert-base-cased"
 sess = rt.InferenceSession("onnx_model.onnx")
 
 sess.set_providers(["CUDAExecutionProvider"])
-tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL_NAME)
+tokenizer = BertTokenizerFast.from_pretrained(PRE_TRAINED_MODEL_NAME)
 BATCH_SIZE = 256
 MAX_LEN = 60
 
@@ -43,9 +43,8 @@ async def root(data: str):
 
     onnx = time.time()
 
-    print(encoding["input_ids"])
     return {
         data: str(pred_onx[0]),
-        "time encode": "%.1f ms" % (1000 * (encode - start)),
-        "time onnx": "%.1f ms" % (1000 * (onnx - encode)),
+        "time encode": "%.1f micros" % (1_000_000 * (encode - start)),
+        "time onnx": "%.1f micros" % (1_000_000 * (onnx - encode)),
     }
